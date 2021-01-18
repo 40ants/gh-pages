@@ -1,0 +1,26 @@
+#!/bin/sh
+#|-*- mode:lisp -*-|#
+#| <Put a one-line description here>
+exec ros -Q -- $0 "$@"
+|#
+(progn ;;init forms
+  (ros:ensure-asdf)
+  #+quicklisp
+  (ql:quickload '(gh-pages)
+                :silent t))
+
+(defpackage :script.gh-pages
+  (:use :cl))
+(in-package :script.gh-pages
+
+
+
+(defun main (&rest argv)
+  (declare (ignorable argv))
+  (log:config :debug)
+  (log:info "Uploading documentation")
+
+  (handler-bind ((error (lambda (condition)
+                          (uiop:print-condition-backtrace condition :stream *error-output*)
+                          (uiop:quit 1))))
+    (gh-pages:upload)))
