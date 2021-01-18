@@ -4,10 +4,6 @@
   (:import-from #:mgl-pax
                 #:section
                 #:defsection)
-  (:import-from #:example/app
-                #:@app)
-  (:import-from #:example/utils
-                #:@utils)
   (:export
    #:build-docs))
 (in-package docs)
@@ -32,7 +28,7 @@ a way to set such secrets in a secure way.
 ")
 
 (defun build-docs ()
-  (mgl-pax:update-asdf-system-readmes @index :example)
+  (mgl-pax:update-asdf-system-readmes @index :gh-pages)
   
   (mgl-pax:update-asdf-system-html-docs
    @index :gh-pages
@@ -40,5 +36,5 @@ a way to set such secrets in a secure way.
    :pages `((:objects
              (,docs:@index)
              :source-uri-fn ,(pax:make-github-source-uri-fn
-                              :example
+                              :gh-pages
                               "https://github.com/40ants/gh-pages")))))
