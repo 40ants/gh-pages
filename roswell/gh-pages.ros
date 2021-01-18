@@ -31,4 +31,5 @@ exec ros -Q -- $0 "$@"
     (handler-bind ((error (lambda (condition)
                             (uiop:print-condition-backtrace condition :stream *error-output*)
                             (uiop:quit 1))))
-      (gh-pages:upload (uiop:parse-unix-namestring path)))))
+      (gh-pages:upload (uiop:parse-unix-namestring path)
+                       :branch branch))))
