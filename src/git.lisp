@@ -6,6 +6,8 @@
                 #:setup-gh-pages-repo
                 #:get-origin-to-push)
   (:import-from #:log4cl)
+  (:import-from #:gh-pages/conditions
+                #:unable-to-proceed)
   (:export
    #:get-git-upstream
    #:repository-initialized-p
@@ -32,10 +34,12 @@
   "This command should be run inside the main root
    of the repository checkout."
   ;; taken from http://stackoverflow.com/a/9753364/70293
-  (let ((upstream
-          (uiop:with-current-directory (dir)
-            (run "git rev-parse --abbrev-ref --symbolic-full-name @{u}"
-                 :raise nil))))
+  (let* ((dir (probe-file dir))
+         (command "git rev-parse --abbrev-ref --symbolic-full-name @{u}")
+         (upstream
+           (uiop:with-current-directory (dir)
+             (log:info "Running" command "in" dir)
+             (run command :raise nil))))
     (when (> (length upstream)
              0)
       (subseq upstream
@@ -57,9 +61,12 @@
 
 (defun remote-branch-exists (dir branch)
   (let* ((upstream (get-git-upstream))
-         (result (git dir (format nil "branch --remote --list '~A/~A'"
-                                  upstream
-                                  branch))))
+         (result (if upstream
+                     (git dir (format nil "branch --remote --list '~A/~A'"
+                                      upstream
+                                      branch))
+                     (error 'unable-to-proceed
+                            :message "Unable to figure out git remote's name."))))
     (unless (string= result "")
       t)))
 
