@@ -3,6 +3,7 @@
   (:import-from #:gh-pages/utils
                 #:run)
   (:import-from #:gh-pages/protocol
+                #:setup-gh-pages-repo
                 #:get-origin-to-push)
   (:import-from #:log4cl)
   (:export
@@ -76,7 +77,8 @@
     (cond
       ((remote-branch-exists dir branch-name)
        (git dir (format nil "checkout ~A"
-                        branch-name)))
+                        branch-name))
+       (setup-gh-pages-repo ci dir))
       (t
        ;; In case when branch does not exists,
        ;; we should create an empty repository and
@@ -87,6 +89,8 @@
          (ensure-directories-exist dir)
          
          (git dir (format nil "init"))
+         (setup-gh-pages-repo ci dir)
+         
          (git dir (format nil "commit --allow-empty -m \"Initial commit\""))
          ;; rename branch into the needed name
          (git dir (format nil "branch -m ~A"
@@ -98,9 +102,7 @@
          ;; Create remote branch and bind it to the local
          (git dir (format nil "push --set-upstream ~A ~A"
                           upstream
-                          branch-name)))))
-    
-    (gh-pages/protocol:setup-gh-pages-repo ci dir)))
+                          branch-name)))))))
 
 
 (defun git-push (dir)
