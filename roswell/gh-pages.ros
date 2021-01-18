@@ -6,21 +6,29 @@ exec ros -Q -- $0 "$@"
 (progn ;;init forms
   (ros:ensure-asdf)
   #+quicklisp
-  (ql:quickload '(gh-pages)
+  (ql:quickload '(gh-pages defmain)
                 :silent t))
 
 (defpackage :script.gh-pages
   (:use :cl))
-(in-package :script.gh-pages
+(in-package :script.gh-pages)
 
 
-
-(defun main (&rest argv)
-  (declare (ignorable argv))
+(defmain:defmain main ((branch "A branch to push to (default: gh-pages)"
+                               :default "gh-pages")
+                       &rest paths)
   (log:config :debug)
-  (log:info "Uploading documentation")
 
-  (handler-bind ((error (lambda (condition)
-                          (uiop:print-condition-backtrace condition :stream *error-output*)
-                          (uiop:quit 1))))
-    (gh-pages:upload)))
+  (unless (= (length paths)
+             1)
+    (log:error "Please, provide a path to HTML files")
+    (uiop:quit 1))
+
+  
+  (let ((path (first paths)))
+    (log:info "Uploading documentation from" path "to" branch)
+
+    (handler-bind ((error (lambda (condition)
+                            (uiop:print-condition-backtrace condition :stream *error-output*)
+                            (uiop:quit 1))))
+      (gh-pages:upload (uiop:parse-unix-namestring path)))))
