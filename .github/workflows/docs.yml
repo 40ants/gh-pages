@@ -33,6 +33,8 @@ jobs:
         run: qlot install
       - name: Build docs
         run: qlot exec docs/scripts/build.ros
+      - name: Check git output
+        run: "git rev-parse --abbrev-ref --symbolic-full-name '@{u}'"
       - name: Upload docs
         run: qlot exec roswell/gh-pages.ros docs/build/
         env:
