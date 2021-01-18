@@ -26,7 +26,6 @@
                           "git "
                           commands)))
         
-      (log:info "Running" command "in" dir)
       (run command))))
 
 
@@ -43,7 +42,6 @@
          (command "git rev-parse --abbrev-ref --symbolic-full-name @{u}")
          (upstream
            (uiop:with-current-directory (dir)
-             (log:info "Running" command "in" dir)
              (run command :raise nil))))
     (cond
       ((> (length upstream)

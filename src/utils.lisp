@@ -13,7 +13,9 @@
 
 If there was an error, raises subprocess-error-with-output, but this
 behaviour could be overriden by keyword argument ``:raise t``."
-  
+  (let ((dir (uiop:getcwd)))
+    (log:info "Running" command "in" dir))
+
   (multiple-value-bind (stdout stderr code)
       (uiop:run-program command
                         :output '(:string :stripped t)
