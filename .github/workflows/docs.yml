@@ -17,12 +17,12 @@ jobs:
       - uses: actions/checkout@v1
       - name: Show env
         run: 'env | sort -u'
-      - name: Check git output
-        run: |
-          git status
-          git branch -a
-          git remote -v
-          git rev-parse --abbrev-ref --symbolic-full-name '@{u}'
+      # - name: Check git output
+      #   run: |
+      #     git status
+      #     git branch -a
+      #     git remote -v
+      #     git rev-parse --abbrev-ref --symbolic-full-name '@{u}'
       - name: Install Roswell
         env:
           LISP: sbcl-bin

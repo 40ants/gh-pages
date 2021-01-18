@@ -32,7 +32,12 @@
 
 (defun get-git-upstream (&optional (dir "."))
   "This command should be run inside the main root
-   of the repository checkout."
+   of the repository checkout.
+
+   It returns a string denoting an upstream name, something like:
+
+       \"origin\"
+"
   ;; taken from http://stackoverflow.com/a/9753364/70293
   (let* ((dir (probe-file dir))
          (command "git rev-parse --abbrev-ref --symbolic-full-name @{u}")
@@ -40,11 +45,15 @@
            (uiop:with-current-directory (dir)
              (log:info "Running" command "in" dir)
              (run command :raise nil))))
-    (when (> (length upstream)
-             0)
-      (subseq upstream
-              0
-              (search "/" upstream)))))
+    (cond
+      ((> (length upstream)
+          0)
+       (subseq upstream
+               0
+               (search "/" upstream)))
+      (t
+       (log:warn "Seems HEAD is detached, returning \"origin\" as upstream name")
+       (values "origin")))))
 
 
 (defun repository-initialized-p (dir)
