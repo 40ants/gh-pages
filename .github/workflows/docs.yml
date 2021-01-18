@@ -40,3 +40,9 @@ jobs:
           # by GitHub. Read more here:
           # https://docs.github.com/en/free-pro-team@latest/actions/reference/authentication-in-a-workflow
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # Readme should be pushed to the main branch
+      - name: Upload updated README
+        run: |
+          git add README.md
+          git commit -m 'Automatic README update.'
+          git push
