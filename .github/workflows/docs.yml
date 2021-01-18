@@ -52,7 +52,7 @@ jobs:
           # MGL-PAX generates README and README.md,
           # but I need only one
           rm -f README
-          qlot exec roswell/gh-pages.ros --branch develop ./
+          qlot exec roswell/gh-pages.ros --branch master ./
         env:
           # This token is automaticall added to the secrets
           # by GitHub. Read more here:
