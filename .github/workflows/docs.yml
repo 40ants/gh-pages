@@ -49,6 +49,12 @@ jobs:
       # Readme should be pushed to the main branch
       - name: Upload updated README
         run: |
-          git add README.md
-          git commit -m 'Automatic README update.'
-          git push
+          # MGL-PAX generates README and README.md,
+          # but I need only one
+          rm -f README
+          qlot exec roswell/gh-pages.ros ./ --branch develop
+        env:
+          # This token is automaticall added to the secrets
+          # by GitHub. Read more here:
+          # https://docs.github.com/en/free-pro-team@latest/actions/reference/authentication-in-a-workflow
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

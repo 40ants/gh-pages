@@ -35,6 +35,6 @@ behaviour could be overriden by keyword argument ``:raise t``."
   "Copies files from one dir to another.
 
    Preserves old files in `to-dir` if they are absent in the `from-dir`."
-  (run (format nil "rsync -a --exclude .git ~A ~A"
+  (run (format nil "rsync -a --exclude .git --exclude .qlot ~A ~A"
                from-dir
                to-dir)))
