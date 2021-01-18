@@ -17,6 +17,12 @@ jobs:
       - uses: actions/checkout@v1
       - name: Show env
         run: 'env | sort -u'
+      - name: Check git output
+        run: |
+          git status
+          git branch -a
+          git remote -v
+          git rev-parse --abbrev-ref --symbolic-full-name '@{u}'
       - name: Install Roswell
         env:
           LISP: sbcl-bin
@@ -33,11 +39,6 @@ jobs:
         run: qlot install
       - name: Build docs
         run: qlot exec docs/scripts/build.ros
-      - name: Check git output
-        run: |
-          git status
-          git branch -a
-          git rev-parse --abbrev-ref --symbolic-full-name '@{u}'
       - name: Upload docs
         run: qlot exec roswell/gh-pages.ros docs/build/
         env:
