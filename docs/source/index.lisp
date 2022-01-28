@@ -1,15 +1,19 @@
-(defpackage #:docs
-  (:nicknames #:docs/index)
+(defpackage #:gh-pages-docs/index
   (:use #:cl)
-  (:import-from #:mgl-pax
-                #:section
+  (:import-from #:40ants-doc
+                #:defsection-copy
                 #:defsection)
-  (:export
-   #:build-docs))
-(in-package docs)
+  (:import-from #:docs-config
+                #:docs-config)
+  (:export #:@readme
+           #:@index))
+(in-package #:gh-pages-docs/index)
 
 
-(defsection @index (:title "GH-PAGES is utility to update your site from CI")
+(defsection @index (:title "GH-PAGES"
+                    :ignore-words ("CI"))
+  (gh-pages system)
+  
   "
 This utility is successor of <https://github.com/40ants/update-gh-pages>. Fully rewritten to be more maintainable and modular.
 
@@ -27,14 +31,19 @@ environment variable. Don't commit it into the repository, usually CI provides
 a way to set such secrets in a secure way.
 ")
 
-(defun build-docs ()
-  (mgl-pax:update-asdf-system-readmes @index :gh-pages)
-  
-  (mgl-pax:update-asdf-system-html-docs
-   @index :gh-pages
-   :target-dir "docs/build/"
-   :pages `((:objects
-             (,docs:@index)
-             :source-uri-fn ,(pax:make-github-source-uri-fn
-                              :gh-pages
-                              "https://github.com/40ants/gh-pages")))))
+
+(defsection-copy @readme @index)
+
+
+(defmethod docs-config ((system (eql (asdf:find-system "gh-pages-docs"))))
+  ;; 40ANTS-DOC-THEME-40ANTS system will bring
+  ;; as dependency a full 40ANTS-DOC but we don't want
+  ;; unnecessary dependencies here:
+  #+quicklisp
+  (uiop:symbol-call :ql :quickload :40ants-doc-theme-40ants)
+  #-quicklisp
+  (asdf:load-system :40ants-doc-theme-40ants)
+
+  (list :theme
+        (find-symbol "40ANTS-THEME"
+                     (find-package "40ANTS-DOC-THEME-40ANTS"))))

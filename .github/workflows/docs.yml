@@ -1,54 +1,42 @@
-
-name: 'Build Docs'
-
-on:
-  push:
-    branches:
-      - 'main'
-      - 'master'
-  schedule:
-    # rebuild docs at 10 AM every Monday
-    - cron:  '0 10 * * 1'
-
-jobs:
-  build_docs:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - name: Show env
-        run: 'env | sort -u'
-      - name: Install Roswell
-        env:
-          LISP: sbcl-bin
-        run: |
-          curl -L https://raw.githubusercontent.com/roswell/roswell/master/scripts/install-for-ci.sh | sh
-          echo /home/runner/.roswell/bin >> $GITHUB_PATH
-      - name: Check CL Version
-        run: |
-          ros install 40ants/cl-info
-          cl-info
-      - name: Install Qlot
-        run: ros install qlot
-      - name: Install Dependencies
-        run: qlot install
-      - name: Build docs
-        run: qlot exec docs/scripts/build.ros
-      - name: Upload docs
-        run: qlot exec roswell/gh-pages.ros docs/build/
-        env:
-          # This token is automaticall added to the secrets
-          # by GitHub. Read more here:
-          # https://docs.github.com/en/free-pro-team@latest/actions/reference/authentication-in-a-workflow
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # Readme should be pushed to the main branch
-      - name: Upload updated README
-        run: |
-          # MGL-PAX generates README and README.md,
-          # but I need only one
-          rm -f README
-          qlot exec roswell/gh-pages.ros --branch master ./
-        env:
-          # This token is automaticall added to the secrets
-          # by GitHub. Read more here:
-          # https://docs.github.com/en/free-pro-team@latest/actions/reference/authentication-in-a-workflow
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+{
+  "name": "DOCS",
+  "on": {
+    "push": {
+      "branches": [
+        "master"
+      ]
+    },
+    "pull_request": null
+  },
+  "jobs": {
+    "build-docs": {
+      "runs-on": "ubuntu-latest",
+      "env": {
+        "OS": "ubuntu-latest",
+        "QUICKLISP_DIST": "quicklisp",
+        "LISP": "sbcl-bin"
+      },
+      "steps": [
+        {
+          "name": "Checkout Code",
+          "uses": "actions/checkout@v1"
+        },
+        {
+          "name": "Setup Common Lisp Environment",
+          "uses": "40ants/setup-lisp@v1",
+          "with": {
+            "asdf-system": "gh-pages-docs"
+          }
+        },
+        {
+          "name": "Build Docs",
+          "uses": "40ants/build-docs@v1",
+          "with": {
+            "asdf-system": "gh-pages-docs",
+            "error-on-warnings": true
+          }
+        }
+      ]
+    }
+  }
+}
