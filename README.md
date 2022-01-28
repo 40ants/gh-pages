@@ -20,6 +20,28 @@ This utility is successor of [https://github.com/40ants/update-gh-pages][9170]. 
 
 It can be used as a standalone script or from the Common Lisp system.
 
+<a id="how-does-it-work"></a>
+
+## How does it work
+
+This script can be run inside a `CI` pipeline to upload `HTML` documentation into a separate
+git branch, used to serve static site on GitHub Pages. Also, you can run it manually
+on localhost.
+
+The script does a few steps:
+
+* it determines in which environment it is running
+
+* what is the proper upstream Git repositor
+
+* then set up a `gh-pages` branch
+
+* uploads content of the given directory, as the content of the `gh-pages` branch.
+
+<a id="ci-support"></a>
+
+## CI Support
+
 Currently [`gh-pages`][8a8b] supports following `CI` systems:
 
 * GitHub Actions
@@ -30,12 +52,45 @@ Also, you can run it from you own machine.
 
 To use the utility on `CI`, make sure there is a github token in the `GITHUB_TOKEN`
 environment variable. Don't commit it into the repository, usually `CI` provides
-a way to set such secrets in a secure way.
+a way to set such secrets in a secure way. Inside GitHub actions this token should
+be already defined.
+
+To learn, how to add support for other `CI` systems, read
+[protocol.lisp][af0e]
+and [github.lisp][893a] as the
+reference implementation.
+
+<a id="x-28GH-PAGES-DOCS-2FINDEX-3A-3A-40INSTALLATION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
+
+## Untitled
+
+To install [`gh-pages`][8a8b], use `Roswell`:
+
+```
+ros install 40ants/gh-pages
+```
+After this command, an executable file `~/.roswell/bin/gh-pages` will be created.
+
+<a id="x-28GH-PAGES-DOCS-2FINDEX-3A-3A-40USAGE-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
+
+## Untitled
+
+```
+Usage: gh-pages [-h] [OPTIONS] PATH...
+
+  -h, --help                  Show help on this program.
+  -b, --branch=STR            A branch to push to (default: gh-pages)
+                              Default: gh-pages
+```
+In most cases you have to specify a path to a directory containing `HTML` docs
+and script will do the rest.
 
 
 [4dde]: https://40ants.com/gh-pages/
 [8a8b]: https://40ants.com/gh-pages/#x-28-23A-28-288-29-20BASE-CHAR-20-2E-20-22gh-pages-22-29-20ASDF-2FSYSTEM-3ASYSTEM-29
 [27aa]: https://github.com/40ants/gh-pages/
+[893a]: https://github.com/40ants/gh-pages/blob/master/src/github.lisp
+[af0e]: https://github.com/40ants/gh-pages/blob/master/src/protocol.lisp
 [9170]: https://github.com/40ants/update-gh-pages
 
 * * *
