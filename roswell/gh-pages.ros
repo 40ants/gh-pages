@@ -14,9 +14,10 @@ exec ros -Q -- $0 "$@"
 (in-package :script.gh-pages)
 
 
-(defmain:defmain main ((branch "A branch to push to (default: gh-pages)"
-                               :default "gh-pages")
-                       &rest paths)
+(defmain:defmain (main :program-name "gh-pages")
+    ((branch "A branch to push to (default: gh-pages)"
+             :default "gh-pages")
+     &rest paths)
   (log:config :debug)
 
   (unless (= (length paths)
