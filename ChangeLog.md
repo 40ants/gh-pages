@@ -7,7 +7,6 @@
 ## 0.2.0 (2022-01-28)
 
 * Command line utility was fixed to work with the latest [`defmain:defmain`][4130] macro.
-
 * Documentation was moved to [`40ants-doc`][a2c7] system.
 
 <a id="x-28GH-PAGES-DOCS-2FCHANGELOG-3A-3A-7C0-2E1-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
