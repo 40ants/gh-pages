@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<rss version="2.0">
+    <channel>
+        <title>gh-pages-docs ChangeLog</title>
+        <link>https://40ants.com/gh-pages/</link>
+        <generator>xml-emitter</generator>
+        <language>en-us</language>
+        <item>
+            <title>0.2.0  (2022-01-28)</title>
+            <description>&lt;ul&gt;&lt;li&gt;&lt;p&gt;Command line utility was fixed to work with the latest &lt;a href=&quot;https://40ants.com/defmain/#x-28DEFMAIN-3ADEFMAIN-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29&quot;&gt;&lt;code&gt;defmain:defmain&lt;/code&gt;&lt;/a&gt; macro.&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Documentation was moved to &lt;a href=&quot;https://40ants.com/doc/#x-28-23A-28-2810-29-20BASE-CHAR-20-2E-20-2240ants-doc-22-29-20ASDF-2FSYSTEM-3ASYSTEM-29&quot;&gt;&lt;code&gt;40ants-doc&lt;/code&gt;&lt;/a&gt; system.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;</description>
+            <pubDate>Fri, 28 Jan 2022 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>0.1.0  (2021-01-18)</title>
+            <description>&lt;p&gt;Initial version&lt;/p&gt;</description>
+            <pubDate>Mon, 18 Jan 2021 00:00:00 +0000</pubDate>
+        </item>
+    </channel>
+</rss>
